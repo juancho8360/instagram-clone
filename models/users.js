@@ -4,6 +4,7 @@ const userSchema = mongoose.Schema({
     username: {
         type: String,
         unique: true,
+        required: [true, "El campo usuario es requerido"]
     },
     password: String,
 });

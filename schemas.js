@@ -6,7 +6,8 @@ export default `
     }
 
     type Query{
-        holaMundo: String
+        allUsers: [User]!
+        getUser(_id: ID): User!
     }
 
     type Mutation{

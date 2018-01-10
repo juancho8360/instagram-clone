@@ -1,6 +1,6 @@
 import User from './users';
 
-const models = {
+export default {
     User,
     //Post
 };
