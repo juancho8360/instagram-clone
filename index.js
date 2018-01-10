@@ -4,10 +4,14 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
-
-import typeDefs from './schemas';
-import resolvers from './resolvers';
 import models from './models';
+
+//Mezclar todos los archivos y las carpetas types y resolvers
+import path from 'path';
+import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
+
+const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './types')));
+const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers')));
 
 const schema = makeExecutableSchema({
     typeDefs,
@@ -21,7 +25,10 @@ const app = express();
 app.use('/graphql', bodyParser.json(), graphqlExpress({ 
     schema,
     context: {
-        models
+        models,
+        user: {
+            _id: 1, username: 'admin'
+        }
     }
 }));
 app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' })); // if you want GraphiQL enabled
