@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import mongoose from 'mongoose';
+import cors from 'cors';
 mongoose.Promise = global.Promise;
 import models from './models';
 
@@ -20,6 +21,9 @@ const schema = makeExecutableSchema({
 const PORT = 3000;
 
 const app = express();
+app.use(cors({
+    origin: ["http://localhost:3001"]
+}))
 
 // bodyParser is needed just for POST.
 app.use('/graphql', bodyParser.json(), graphqlExpress({ 
